@@ -701,8 +701,15 @@ class AmazonProduct(LXMLWrapper):
             else:
                 price = self._safe_get_element_text(
                     'OfferSummary.LowestNewPrice.Amount')
-                currency = self._safe_get_element_text(
-                    'OfferSummary.LowestNewPrice.CurrencyCode')
+                if price:
+                    currency = self._safe_get_element_text(
+                        'OfferSummary.LowestNewPrice.CurrencyCode')
+                else:
+                    price=self._safe_get_element_text(
+                        'VariationSummary.LowestPrice.Amount')
+                    currency = self._safe_get_element_text(
+                        'VariationSummary.LowestPrice.CurrencyCode')
+
         if price:
             fprice = float(price) / 100 if 'JP' not in self.region else price
             return fprice, currency
